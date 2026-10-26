@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          sleep 10
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          sleep $((RANDOM % 40 + 10))
+          # about 1 in 4 runs fail, so PulseCheck sees failed builds
+          if [ $((RANDOM % 4)) -eq 0 ]; then
+            echo "Tests failed"
+            exit 1
+          fi
+          echo "All tests passed"
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy
+        run: |
+          echo "Deploying to production..."
+          sleep 15
+          # about 1 in 5 deploys fail, so PulseCheck sees failed deployments
+          if [ $((RANDOM % 5)) -eq 0 ]; then
+            echo "Deployment failed"
+            exit 1
+          fi
+          echo "Deployed"
