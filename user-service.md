@@ -46,7 +46,6 @@ async function updateUserEmail(userId, value) {
   await db.users.update(userId, { email: value, updatedAt: new Date() });
   return getUserEmail(userId);
 }
-
 /**
  * Get the user's phone.
  */
