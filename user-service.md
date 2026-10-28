@@ -13,7 +13,6 @@ async function getUserName(userId) {
   }
   return user.name;
 }
-
 /**
  * Update the user's name.
  */
